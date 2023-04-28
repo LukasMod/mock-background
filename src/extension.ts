@@ -1,26 +1,53 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode"
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const randomRGBA = () => {
+  let r = Math.floor(Math.random() * 256)
+  let g = Math.floor(Math.random() * 256)
+  let b = Math.floor(Math.random() * 256)
+  let a = 0.4
+  return `"rgba(${r}, ${g}, ${b}, ${a})"`
+}
+
 export function activate(context: vscode.ExtensionContext) {
+  let disposable = vscode.commands.registerCommand(
+    "extension.generateRgbaString",
+    () => {
+      const editor = vscode.window.activeTextEditor
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "mock-background" is now active!');
+      if (editor) {
+        const position = editor.selection.active
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('mock-background.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Mock Background!');
-	});
+        editor.edit((builder) => {
+          builder.insert(position, randomRGBA())
+        })
+      }
+    }
+  )
 
-	context.subscriptions.push(disposable);
+  context.subscriptions.push(disposable)
+
+  let disposable2 = vscode.commands.registerCommand(
+    "extension.generateRgbaBackgroundColor",
+    () => {
+      const backgroundColorStyleProp = `backgroundColor: ${randomRGBA()}`
+      // Get the active text editor
+      const editor = vscode.window.activeTextEditor
+
+      if (editor) {
+        const position = editor.selection.active
+
+        editor.edit((builder) => {
+          builder.insert(position, backgroundColorStyleProp)
+        })
+      }
+    }
+  )
+
+  context.subscriptions.push(disposable2)
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
+

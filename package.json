@@ -14,8 +14,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "mock-background.helloWorld",
-        "title": "Hello World"
+        "command": "extension.generateRgbaString",
+        "title": "RandColor"
+      },
+      {
+        "command": "extension.generateRgbaBackgroundColor",
+        "title": "RandBackground"
       }
     ]
   },
@@ -41,3 +45,4 @@
     "@vscode/test-electron": "^2.3.0"
   }
 }
+
